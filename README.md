@@ -1,25 +1,50 @@
-# XCOM2WotC-f35
-Small shared library to fix glibc compatibility issue to Steam's XCOM2 WotC game for Fedora 35 (and above i hope).
-Unfortunately `XCOM2WotC` binary executable was built in a bit wrong way and adeded the referencese to GLibC's
-private functions (since GLibC 2.34). I hope it will be fixed by product development team soon.
-If you are lucky enough ;) (like me) and have updated your Fedora Linux to 35 you can use a small trick given project
-provides: it just creates synonyms to GLibC's public functions; you just need to build a shared library ask dynamic
-linker to preload it  so that `XCOM2WotC` application could use missing routines.
+# General
 
-## Build
+Small shared library to fix glibc compatibility issue to Steam's Shogun 2 game
+for Ubuntu 23.04 (and above I hope). This adds a second fix I fouind on 
+ProtonDB to the one from the forked repository (which was created for XCOM 2).
 
-make
+# Prerequisites
 
-## Preload activation
+Install basic build tools:
 
-There are two way to do it:
+```sudo apt install build-essential```
 
-* using of LD_PRELOAD environment variable (e.g. export LD_PRELOAD=<full-path-to-liblibc_dlopen_mode.so>)
-* update `Steam/steamapps/common/XCOM 2/XCOM2WotC/XCOM2WotC.sh` shell script used by `steam` application to start the game running:
-  look for `LD_PRELOAD_ADDITIONS=` instruction and add the path to `liblibc_dlopen_mode.so` library there
-  
-## Known issues
+# Usage
 
-Unfortunately space symbols in the path to `liblibc_dlopen_mode.so` library are not supported by `Steam/steamapps/common/XCOM 2/XCOM2WotC/XCOM2WotC.sh`
-script out of the box. I am quite lazy to look for a solution as i am happy enough with given fix.
+Build the 2 shared libraries
 
+```make clean install```
+
+This installs the libraries in `/opt/shogun2-fix` (requires root), you can also 
+just build them with `make clean all` and adapt the paths to a location of
+your choosing.
+
+Then add the following to the Launch Options in Steam:
+
+```LD_PRELOAD=/opt/shogun2-fix/libc_mprotect.so:/opt/shogun2-fix/libc_dlopen_mode.so %command%```
+
+# Additonal problems
+
+Not sure when/how this was broken, but I also had to add the following to 
+line 170 in the `Shogun2.sh` script in the game installation directory:
+
+```export LD_LIBRARY_PATH=$GAMEROOT/$FERAL_LIB_PATH:$LD_LIBRARY_PATH```
+
+# Alternative startup script
+
+Instead of altering the `Shogun.sh` script and setting the launch options
+you can also copy over the version from this repository where I already made
+both changes.
+
+# Known issues
+
+Unfortunately space symbols in the path to `libc_dlopen_mode.so` library
+are not supported by `Steam/steamapps/common/XCOM 2/XCOM2WotC/XCOM2WotC.sh`
+script out of the box. I am quite lazy to look for a solution as i am happy
+enough with given fix.
+
+# Credits
+
+- The libc_dlopen_mode fix is from user vkc-1974 in the forked repository
+- The libc_mprotect fix was posted by PsychoPewPew on https://www.protondb.com/app/34330
