@@ -8,7 +8,7 @@ ProtonDB to the one from the forked repository (which was created for XCOM 2).
 
 Install basic build tools:
 
-```sudo apt install build-essential```
+```sudo apt install build-essential gcc-multilib```
 
 # Usage
 
