@@ -167,8 +167,7 @@ fi
 LD_PRELOAD="${LD_PRELOAD_ADDITIONS}:${SYSTEM_LD_PRELOAD}"
 export LD_PRELOAD
 
-#LD_LIBRARY_PATH=/opt/steam/steamapps/common/Total\ War\ SHOGUN\ 2/lib/i686:$LD_LIBRARY_PATH
-LD_LIBRARY_PATH=$GAMEROOT/$FERAL_LIB_PATH:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH="${GAMEROOT}/${FERAL_LIB_PATH}:${LD_LIBRARY_PATH}"
 
 # ====================================================================
 # Try and detect some common problems and show useful messages

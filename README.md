@@ -1,8 +1,8 @@
 # General
 
-Small shared library to fix glibc compatibility issue to Steam's Shogun 2 game
-for Ubuntu 23.04 (and above I hope). This adds a second fix I fouind on 
-ProtonDB to the one from the forked repository (which was created for XCOM 2).
+Small shared libraries to fix glibc compatibility issues to Steam's Shogun 2 game
+for Ubuntu 23.04, 23.10, 24.04, 24.10, 25.04 (and above I hope). This adds a second fix I found on 
+ProtonDB to the one from the forked repository (which was created for XCOM 2).:wq
 
 # Prerequisites
 
@@ -29,7 +29,7 @@ Then add the following to the Launch Options in Steam:
 Not sure when/how this was broken, but I also had to add the following to 
 line 170 in the `Shogun2.sh` script in the game installation directory:
 
-```export LD_LIBRARY_PATH=$GAMEROOT/$FERAL_LIB_PATH:$LD_LIBRARY_PATH```
+```export LD_LIBRARY_PATH="${GAMEROOT}/${FERAL_LIB_PATH}:${LD_LIBRARY_PATH}"```
 
 # Alternative startup script
 
@@ -37,7 +37,7 @@ Instead of altering the `Shogun.sh` script and setting the launch options
 you can also copy over the version from this repository where I already made
 both changes.
 
-# Known issues
+# Known issues (from forked project)
 
 Unfortunately space symbols in the path to `libc_dlopen_mode.so` library
 are not supported by `Steam/steamapps/common/XCOM 2/XCOM2WotC/XCOM2WotC.sh`
